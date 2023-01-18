@@ -1,8 +1,14 @@
-from fltk import *
-import id
+from fltk import * 
+from ida import *
+
 
 def ligne(n):
-    return [id()]*n
+    list = []
+    for i in range(n):
+        r = ident()
+        list.append(r)
+    return list
+
 
 
 def plateau_marienbad(rangée):
@@ -38,11 +44,13 @@ def affichage(plateau):
         print(i)
 
 def affichage_graphique(plateau):
+    efface_tout()
     for i in range(len(plateau)):
         for j  in range(len(plateau[i])):
             x, y = 25 + 75 * j , 35 + 200*i
             c, d = 75*(j+1) , 200*(i+1)
             plateau[i][j].affichage(x, y, c, d)
+            
 
 
 
@@ -60,10 +68,22 @@ while victoire(nbre_objet):
 
     efface_tout()
     affichage_graphique(plateau)
+    mise_a_jour()
+    
+    
 
-    if tev == "ClickGauche":
-        pass
-
+    if tev == "ClicGauche":
+        print("fefefefefef")
+        x = ordonnee_souris()
+        y = abscisse_souris()
+        print("wshs", x, y)
+        
+        for i in plateau:
+            for j in i:
+                if j.verif_click((y,x)):
+                    j.select()
+                    print("ta tzaidon")
+                    break
 
 
 
