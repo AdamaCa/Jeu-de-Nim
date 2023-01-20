@@ -25,17 +25,24 @@ class ident():
     
     
     def select(self):
-        self.selection = True
+        self.selection = not self.selection
            
         
         
-    def affichage(self, x, y, i, j):
+    def placement(self, x, y, i, j):
         self.pos_x = (x,i)
         self.pos_y = (y, j)
+        self.rectangle = rectangle(x, y, i, j, remplissage = "purple")
+    
+    def affichage(self):
         if not self.selection: 
-            self.rectangle = rectangle(x, y, i, j, remplissage = "purple")
+            self.rectangle = rectangle(self.pos_x[0], self.pos_y[0], self.pos_x[1], self.pos_y[1], remplissage = "purple")
         else:
-            self.rectangle = rectangle(x, y, i, j, remplissage = "black")
+            self.rectangle = rectangle(self.pos_x[0], self.pos_y[0], self.pos_x[1], self.pos_y[1], remplissage = "black")
+            
+    def GetSelection(self):
+        return self.selection
+
                 
 
    
