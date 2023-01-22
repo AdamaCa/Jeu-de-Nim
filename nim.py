@@ -19,7 +19,14 @@ def comptage_plateau():
 def victoire(nbre_objet):
     return not bool(nbre_objet)
 
-def placement_objet():
+
+
+
+def affichage(plateau):
+    for i in plateau:
+        print(i)
+
+def placement_objet(plateau):
     for i in range(len(plateau)):
         for j  in range(len(plateau[i])):
             x, y = 25 + 75 * j , 35 + 200*i
@@ -31,37 +38,33 @@ def affichage_objet():
         for j in range(len(plateau[i])):
             plateau[i][j].affichage()
 
-def affichage_graphique():
-    affichage_objet()
-    affichage_BEnlevez()
-    affichage_joueur()
-           
-def affichage_BEnlevez():
-    texte(500, 750, "Enlevez", taille=25)
-    rectangle(490 , 750 , 720, 785)
+def affichage_graphique(plateau):
+    affichage_objet(plateau)
+
+            
+def BoutonEffacement(plateau):
+    pass
+    
+    
+    
+def Supression(plateau):
+    for i in plateau:
+        for l in i:
+            if l.GetSelection():
+                i.remove(l)
+               
+
+                
+    return None, plateau
    
-def Action_BEnlevez(y, x):
-    list = []
-    if 490 < x < 720 and 750 < y < 785 and rangee != None:
-        for ligne in plateau:
-            while  ["" for element in ligne if element.GetSelection()] != []:
-                list = [ligne.remove(element) for element in ligne if element.GetSelection()]
-            if list != []:
-                return None, plateau, not joueur
-    return rangee, plateau, joueur
-   
-def affichage_joueur():
-    texte(600, 70, "Tour du joueur " + str(int(joueur) + 1))
+
 
 cree_fenetre(900,900)
 
 plateau = plateau_marienbad((7, 5, 3, 1 ))
 rangee = None
-joueur = False
-placement_objet()
-
-
-while True:
+placement_objet(plateau)
+while victoire(nbre_objet):
 
     ev = donne_ev()
     tev = type_ev(ev)
@@ -79,9 +82,11 @@ while True:
                 if j.verif_click((y,x)) and (i == rangee or rangee == None):
                     j.select()
                     rangee = i
-
-        rangee, plateau, joueur = Action_BEnlevez(x, y)
-
+                    break
+        
+        BoutonSuppr(plateau)
+    
+    rangee, plateau = BoutonEffacement(plateau)
     
     
     if tev == "Quitte":
