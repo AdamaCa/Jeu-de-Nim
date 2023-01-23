@@ -41,18 +41,29 @@ def affichage_Benlever():
     rectangle(490 , 550 , 720, 585)
    
 def Action_Benlever(y, x):
-    
-    for ligne in plateau:
-        list = ["" for element in ligne if element.GetSelection()]
-        if 490 < x < 720 and 550 < y < 585 and rangee != None:
-            for l in plateau:
-                print(l)
-                while  ["" for element in l if element.GetSelection()] != []:
-                    if 490 < x < 720 and 550 < y < 585 and rangee != None:
-                        list = [ligne.remove(element) for element in l if element.GetSelection()]
-        if list != []:
-            return rangee, plateau, joueur
-    return None, plateau, joueur
+    list = []
+    if 490 < x < 720 and 550 < y < 585 and rangee != None:
+        for ligne in plateau:
+            while  ["" for element in ligne if element.GetSelection()] != []:
+                list = [ligne.remove(element) for element in ligne if element.GetSelection()]
+            if list != []:
+                return plateau, not joueur
+    return plateau, joueur    
+        
+
+def reset_rangee():
+    for i in plateau:
+        for j in i:
+            if j.GetSelection():
+                return rangee
+    return None
+
+def affichage_victoire():
+    texte(500, 550, "le joueur " + str(joueur) + "a gagné")                
+                
+                
+
+
    
 def affichage_joueur():
     texte(600, 70, "Tour du joueur " + str(int(joueur) + 1))
@@ -66,10 +77,9 @@ placement_objet()
 
 
 while True:
-
+    
     ev = donne_ev()
     tev = type_ev(ev)
-
 
     efface_tout()
 
@@ -84,12 +94,12 @@ while True:
                     j.select()
                     rangee = i
 
-        rangee, plateau, joueur = Action_Benlever(x, y)
+        plateau, joueur = Action_Benlever(x, y)
+        rangee = reset_rangee()
 
     
     
     if tev == "Quitte":
-        ferme_fenetre()
         break
     
 
@@ -97,6 +107,8 @@ while True:
     mise_a_jour()
     
     if victoire(comptage_plateau()):
+        affichage_victoire()
+        attend_ev()
         break
 print("Fin du jeu")
 ferme_fenetre()
