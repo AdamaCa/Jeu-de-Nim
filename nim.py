@@ -33,22 +33,26 @@ def affichage_objet():
 
 def affichage_graphique():
     affichage_objet()
-    affichage_BEnlevez()
+    affichage_Benlever()
     affichage_joueur()
            
-def affichage_BEnlevez():
-    texte(500, 750, "Enlevez", taille=25)
-    rectangle(490 , 750 , 720, 785)
+def affichage_Benlever():
+    texte(500, 550, "Enlevez", taille=25)
+    rectangle(490 , 550 , 720, 585)
    
-def Action_BEnlevez(y, x):
-    list = []
-    if 490 < x < 720 and 750 < y < 785 and rangee != None:
-        for ligne in plateau:
-            while  ["" for element in ligne if element.GetSelection()] != []:
-                list = [ligne.remove(element) for element in ligne if element.GetSelection()]
-            if list != []:
-                return None, plateau, not joueur
-    return rangee, plateau, joueur
+def Action_Benlever(y, x):
+    
+    for ligne in plateau:
+        list = ["" for element in ligne if element.GetSelection()]
+        if 490 < x < 720 and 550 < y < 585 and rangee != None:
+            for l in plateau:
+                print(l)
+                while  ["" for element in l if element.GetSelection()] != []:
+                    if 490 < x < 720 and 550 < y < 585 and rangee != None:
+                        list = [ligne.remove(element) for element in l if element.GetSelection()]
+        if list != []:
+            return rangee, plateau, joueur
+    return None, plateau, joueur
    
 def affichage_joueur():
     texte(600, 70, "Tour du joueur " + str(int(joueur) + 1))
@@ -80,7 +84,7 @@ while True:
                     j.select()
                     rangee = i
 
-        rangee, plateau, joueur = Action_BEnlevez(x, y)
+        rangee, plateau, joueur = Action_Benlever(x, y)
 
     
     
