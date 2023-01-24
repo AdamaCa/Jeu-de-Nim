@@ -60,8 +60,10 @@ def reset_rangee():
 def affichage_victoire():
     texte(500, 550, "le joueur " + str(int(joueur) + 1) + " a gagné")                
                 
-                
+def calclul(num_somme,num, plateau):
+    print(num_somme ^ num)
 
+        
 def num(list):
     sum = 0
     for i in list:
