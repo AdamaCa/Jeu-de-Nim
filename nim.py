@@ -1,7 +1,7 @@
 
 from fltk import * 
 from ida import *
-
+import random
 def ligne(n):
     return [ident() for i in range(n)]
 
@@ -46,7 +46,6 @@ def Action_Benlever(y, x):
             while  ["" for element in ligne if element.GetSelection()] != []:
                 list = [ligne.remove(element) for element in ligne if element.GetSelection()]
             if list != []:
-                print(ia())
                 return plateau, not joueur
     return plateau, joueur    
         
@@ -61,42 +60,42 @@ def reset_rangee():
 def affichage_victoire():
     texte(500, 550, "le joueur " + str(int(joueur) + 1) + " a gagné")                
                 
-def calclul(num_somme,num, plateau):
-    print(num_somme ^ num)
-
-        
-def encadrement(num,list):
-    for i in range(len(list)):
-        n =0
-        while 2**n < len(list[i]) or 2**n < num < 2**(n+1):
-            n += 1
-            if 2 **n == len(list[i]):
-                return i
-
-def calclul(num_somme,num):
-    a_enlever = num_somme ^ num
-    return  num - a_enlever
-
+def encadrement(list):
+    list_len = [(len(list[i]),i) for i in range(len(list))]
+    return max(list_len)
     
-def num(list):
-    sum = len( list[-1])
-    for i in range(len(list)-1):
-        sum = sum ^ len(list[i])
-        print(sum)
+def num(list, rangee):
+    sum = 0
+    for i in range(len(list)):
+        if i != rangee:
+            sum = sum ^ len(list[i])
     return sum
 
-def ia():
-    num_somme =  num(plateau)
-    return calclul(num_somme, num([plateau[encadrement(num_somme ,plateau)]])), encadrement(num_somme ,plateau)
+
+ 
+def choix_hasard(list):
+    liste = [(len(list[i]), i) for i in range(len(list))]
+    choix =  random.choice(liste)
+    return choix[1], random.randint(1,choix[0]), 'hasard'
+
+
+
+def ia(plateau):
+    if num(plateau,"a") != 0:
+        pg_num , rangee = encadrement(plateau)
+        num_reste = num(plateau,rangee)
+        a_enlever = pg_num - num_reste
+        return (rangee , a_enlever, "calcul")
+    return choix_hasard(plateau)
 
 def affichage_joueur():
-    texte(600, 70, "Tour du joueur " + str(int(joueur) + 1))
+    texte(600, 70, "Tour du joueur " + str(int(not(joueur)) + 1))
 
 cree_fenetre(900,900)
 
 plateau = plateau_marienbad([7,4,2,3])
 rangee = None
-joueur = False
+joueur = True
 placement_objet()
 
 
@@ -107,8 +106,17 @@ while True:
     tev = type_ev(ev)
 
     efface_tout()
+    
+    if not joueur:
+        a_supprimer = ia(plateau)
+        print(a_supprimer)
+        print(plateau[a_supprimer[0]])
+        plateau[a_supprimer[0]] = plateau[a_supprimer[0]][:len(plateau[a_supprimer[0]]) - a_supprimer[1]]
 
-    if tev == "ClicGauche":
+        joueur = not joueur
+    
+    if tev == "ClicGauche" and not joueur == False:
+
         x = ordonnee_souris()
         y = abscisse_souris()
 
@@ -121,9 +129,8 @@ while True:
 
         plateau, joueur = Action_Benlever(x, y)
         rangee = reset_rangee()
-
     
-    
+ 
     if tev == "Quitte":
         break
     
