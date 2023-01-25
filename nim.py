@@ -36,16 +36,17 @@ def affichage_graphique():
     affichage_joueur()
            
 def affichage_Benlever():
-    rectangle(645 , 745, 775, 790, remplissage = "green")
+    rectangle(645 , 505, 775, 530, remplissage = "green")
     texte(650, 750, "Enlevez", taille=25)
    
 def Action_Benlever(y, x):
     list = []
-    if 645 < x < 775 and 745 < y < 790 and rangee != None:
+    if 645 < x < 775 and 505 < y < 530 and rangee != None:
         for ligne in plateau:
             while  ["" for element in ligne if element.GetSelection()] != []:
                 list = [ligne.remove(element) for element in ligne if element.GetSelection()]
             if list != []:
+                print(ia())
                 return plateau, not joueur
     return plateau, joueur    
         
@@ -64,18 +65,36 @@ def calclul(num_somme,num, plateau):
     print(num_somme ^ num)
 
         
+def encadrement(num,list):
+    for i in range(len(list)):
+        n =0
+        while 2**n < len(list[i]) or 2**n < num < 2**(n+1):
+            n += 1
+            if 2 **n == len(list[i]):
+                return i
+
+def calclul(num_somme,num):
+    a_enlever = num_somme ^ num
+    return  num - a_enlever
+
+    
 def num(list):
-    sum = 0
-    for i in list:
-        sum ^ i
+    sum = len( list[-1])
+    for i in range(len(list)-1):
+        sum = sum ^ len(list[i])
+        print(sum)
     return sum
-   
+
+def ia():
+    num_somme =  num(plateau)
+    return calclul(num_somme, num([plateau[encadrement(num_somme ,plateau)]])), encadrement(num_somme ,plateau)
+
 def affichage_joueur():
     texte(600, 70, "Tour du joueur " + str(int(joueur) + 1))
 
 cree_fenetre(900,900)
 
-plateau = plateau_marienbad([7])
+plateau = plateau_marienbad([7,4,2,3])
 rangee = None
 joueur = False
 placement_objet()
@@ -119,7 +138,6 @@ while True:
         break
 print("Fin du jeu")
 ferme_fenetre()
-    
     
 
 
